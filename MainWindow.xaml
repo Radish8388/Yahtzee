@@ -1,0 +1,421 @@
+﻿<Window x:Class="Yahtzee.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Yahtzee"
+        mc:Ignorable="d"
+        Title="Yahtzee"
+        Height="700" Width="1100"
+        Loaded="Window_Loaded"
+        ContentRendered="Window_ContentRendered"
+        Closing="Window_Closing">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="1"> <!-- left half of the window -->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Content="New Game" FontSize="16" Width="90" Margin="0,0,5,0" Click="NewGameButton_Click"/>
+                <Button Content="Stats" FontSize="16" Width="80" Margin="0,0,5,0" Click="StatsButton_Click"/>
+                <Button Content="Roll Dice" FontSize="16" Width="80" Margin="0,0,0,0" Click="RollDiceButton_Click"/>
+            </StackPanel>
+            <TextBlock x:Name="Instructions"
+                       Text="Instructions here."
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       FontSize="18"
+                       TextWrapping="Wrap"
+                       Grid.Row="1"
+                       Margin="10,0,10,0"/>
+            <Canvas x:Name="Table" Grid.Row="2" Background="White"
+                    MouseDown="Table_MouseDown"
+                    MouseUp="Table_MouseUp"
+                    MouseMove="Table_MouseMove"
+                    SizeChanged="Table_SizeChanged"/>
+        </Grid>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Grid.Column="0">
+            <!-- your scorecard Grid goes here -->
+            <Border BorderBrush="Black" BorderThickness="1">
+                <Grid Margin="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="6*"/>
+                        <ColumnDefinition Width="5*"/>
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <!-- 1st row -->
+                    <TextBlock Grid.Row="0" Grid.ColumnSpan="3" Text="SCORECARD" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+                    
+                    <!-- 2nd row -->
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="1" Grid.Column="0">
+                        <TextBlock Text="UPPER SECTION" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+                    </Border>
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="1" Grid.Column="1">
+                        <TextBlock Text="HOW TO SCORE" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+                    </Border>
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="1" Grid.Column="2">
+                        <TextBlock Text="SCORE" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+                    </Border>
+
+                    <!-- 3rd row -->
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="2" Grid.Column="0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="2*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Aces" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="18"/>
+                            <Image Source="/images/one.png" Grid.Column="1" Width="20" Height="20"/>
+                            <TextBlock Grid.Column="2" Text="= 1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="18"/>
+                        </Grid>
+                    </Border>
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="2" Grid.Column="1">
+                        <TextBlock Text="Count and Add Only Aces" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" TextWrapping="Wrap"/>
+                    </Border>
+                    <Border x:Name="Border1" BorderBrush="Red" BorderThickness="2" Grid.Row="2" Grid.Column="2" MouseDown="Aces_Score_MouseDown" Background="Transparent">
+                        <TextBlock x:Name="Aces_Score" Text="" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+                    </Border>
+
+                    <!-- 4th row -->
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="3" Grid.Column="0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="2*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Twos" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="18"/>
+                            <Image Source="/images/two.png" Grid.Column="1" Width="20" Height="20"/>
+                            <TextBlock Grid.Column="2" Text="= 2" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="18"/>
+                        </Grid>
+                    </Border>
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="3" Grid.Column="1">
+                        <TextBlock Text="Count and Add Only Twos" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" TextWrapping="Wrap"/>
+                    </Border>
+                    <Border x:Name="Border2" BorderBrush="Red" BorderThickness="2" Grid.Row="3" Grid.Column="2" MouseDown="Twos_Score_MouseDown" Background="Transparent">
+                        <TextBlock x:Name="Twos_Score" Text="" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+                    </Border>
+
+                    <!-- 5th row -->
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="4" Grid.Column="0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="2*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Threes" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="18"/>
+                            <Image Source="/images/three.png" Grid.Column="1" Width="20" Height="20"/>
+                            <TextBlock Grid.Column="2" Text="= 3" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="18"/>
+                        </Grid>
+                    </Border>
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="4" Grid.Column="1">
+                        <TextBlock Text="Count and Add Only Threes" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" TextWrapping="Wrap"/>
+                    </Border>
+                    <Border x:Name="Border3" BorderBrush="Red" BorderThickness="2" Grid.Row="4" Grid.Column="2" MouseDown="Threes_Score_MouseDown" Background="Transparent">
+                        <TextBlock x:Name="Threes_Score" Text="" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+                    </Border>
+
+                    <!-- 6th row -->
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="5" Grid.Column="0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="2*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Fours" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="18"/>
+                            <Image Source="/images/four.png" Grid.Column="1" Width="20" Height="20"/>
+                            <TextBlock Grid.Column="2" Text="= 4" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="18"/>
+                        </Grid>
+                    </Border>
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="5" Grid.Column="1">
+                        <TextBlock Text="Count and Add Only Fours" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" TextWrapping="Wrap"/>
+                    </Border>
+                    <Border x:Name="Border4" BorderBrush="Red" BorderThickness="2" Grid.Row="5" Grid.Column="2" MouseDown="Fours_Score_MouseDown" Background="Transparent">
+                        <TextBlock x:Name="Fours_Score" Text="" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+                    </Border>
+
+                    <!-- 7th row -->
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="6" Grid.Column="0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="2*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Fives" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="18"/>
+                            <Image Source="/images/five.png" Grid.Column="1" Width="20" Height="20"/>
+                            <TextBlock Grid.Column="2" Text="= 5" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="18"/>
+                        </Grid>
+                    </Border>
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="6" Grid.Column="1">
+                        <TextBlock Text="Count and Add Only Fives" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" TextWrapping="Wrap"/>
+                    </Border>
+                    <Border x:Name="Border5" BorderBrush="Red" BorderThickness="2" Grid.Row="6" Grid.Column="2" MouseDown="Fives_Score_MouseDown" Background="Transparent">
+                        <TextBlock x:Name="Fives_Score" Text="" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+                    </Border>
+
+                    <!-- 8th row -->
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="7" Grid.Column="0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="2*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Sixes" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="18"/>
+                            <Image Source="/images/six.png" Grid.Column="1" Width="20" Height="20"/>
+                            <TextBlock Grid.Column="2" Text="= 6" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="18"/>
+                        </Grid>
+                    </Border>
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="7" Grid.Column="1">
+                        <TextBlock Text="Count and Add Only Sixes" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" TextWrapping="Wrap"/>
+                    </Border>
+                    <Border x:Name="Border6" BorderBrush="Red" BorderThickness="2" Grid.Row="7" Grid.Column="2" MouseDown="Sixes_Score_MouseDown" Background="Transparent">
+                        <TextBlock x:Name="Sixes_Score" Text="" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+                    </Border>
+
+                    <!-- 9th row -->
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="8" Grid.Column="0">
+                        <TextBlock Text="TOTAL SCORE" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+                    </Border>
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="8" Grid.Column="1">
+                        <TextBlock Text="→" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+                    </Border>
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="8" Grid.Column="2">
+                        <TextBlock x:Name="Upper_Subtotal" Text="" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+                    </Border>
+
+                    <!-- 10th row -->
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="9" Grid.Column="0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="BONUS" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+                            <TextBlock Grid.Column="1" Text="If total score is 63 or over" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="10" TextWrapping="Wrap" MaxWidth="70"/>
+                        </Grid>
+                    </Border>
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="9" Grid.Column="1">
+                        <TextBlock Text="SCORE 35" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+                    </Border>
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="9" Grid.Column="2">
+                        <TextBlock x:Name="Upper_Bonus" Text="" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+                    </Border>
+
+                    <!-- 11th row -->
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="10" Grid.Column="0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="TOTAL" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+                            <TextBlock Grid.Column="1" Text="Of Upper Section" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="10" TextWrapping="Wrap" MaxWidth="60"/>
+                        </Grid>
+                    </Border>
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="10" Grid.Column="1">
+                        <TextBlock Text="→" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+                    </Border>
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="10" Grid.Column="2">
+                        <TextBlock x:Name="Upper_Total" Text="" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+                    </Border>
+
+                    <!-- 12th row -->
+                    <TextBlock Text="LOWER SECTION" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" Grid.Row="11" Grid.Column="0"/>
+
+                    <!-- 13th row -->
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="12" Grid.Column="0">
+                        <TextBlock Text="3 of a kind" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+                    </Border>
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="12" Grid.Column="1">
+                        <TextBlock Text="Add Total of All Dice" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" TextWrapping="Wrap"/>
+                    </Border>
+                    <Border x:Name="Border10" BorderBrush="Red" BorderThickness="2" Grid.Row="12" Grid.Column="2" MouseDown="ThreeOfAKind_MouseDown" Background="Transparent">
+                        <TextBlock x:Name="ThreeOfAKind" Text="" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+                    </Border>
+
+                    <!-- 14th row -->
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="13" Grid.Column="0">
+                        <TextBlock Text="4 of a kind" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+                    </Border>
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="13" Grid.Column="1">
+                        <TextBlock Text="Add Total of All Dice" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" TextWrapping="Wrap"/>
+                    </Border>
+                    <Border x:Name="Border11" BorderBrush="Red" BorderThickness="2" Grid.Row="13" Grid.Column="2" MouseDown="FourOfAKind_MouseDown" Background="Transparent">
+                        <TextBlock x:Name="FourOfAKind" Text="" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+                    </Border>
+
+                    <!-- 15th row -->
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="14" Grid.Column="0">
+                        <TextBlock Text="Full House" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+                    </Border>
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="14" Grid.Column="1">
+                        <TextBlock Text="SCORE 25" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" TextWrapping="Wrap"/>
+                    </Border>
+                    <Border x:Name="Border12" BorderBrush="Red" BorderThickness="2" Grid.Row="14" Grid.Column="2" MouseDown="FullHouse_MouseDown" Background="Transparent">
+                        <TextBlock x:Name="FullHouse" Text="" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+                    </Border>
+
+                    <!-- 16th row -->
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="15" Grid.Column="0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="4*"/>
+                                <ColumnDefinition Width="3*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Small Straight" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" Grid.Column="0" TextWrapping="Wrap"/>
+                            <TextBlock Text="Sequence of 4" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" Grid.Column="1" TextWrapping="Wrap" MaxWidth="60"/>
+                        </Grid>
+                    </Border>
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="15" Grid.Column="1">
+                        <TextBlock Text="SCORE 30" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" TextWrapping="Wrap"/>
+                    </Border>
+                    <Border x:Name="Border13" BorderBrush="Red" BorderThickness="2" Grid.Row="15" Grid.Column="2" MouseDown="SmStraight_MouseDown" Background="Transparent">
+                        <TextBlock x:Name="SmStraight" Text="" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+                    </Border>
+
+                    <!-- 17th row -->
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="16" Grid.Column="0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="4*"/>
+                                <ColumnDefinition Width="3*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Large Straight" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" Grid.Column="0" TextWrapping="Wrap"/>
+                            <TextBlock Text="Sequence of 5" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" Grid.Column="1" TextWrapping="Wrap" MaxWidth="60"/>
+                        </Grid>
+                    </Border>
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="16" Grid.Column="1">
+                        <TextBlock Text="SCORE 40" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" TextWrapping="Wrap"/>
+                    </Border>
+                    <Border x:Name="Border14" BorderBrush="Red" BorderThickness="2" Grid.Row="16" Grid.Column="2" MouseDown="LgStraight_MouseDown" Background="Transparent">
+                        <TextBlock x:Name="LgStraight" Text="" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+                    </Border>
+
+                    <!-- 18th row -->
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="17" Grid.Column="0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="YAHTZEE" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" Grid.Column="0" TextWrapping="Wrap"/>
+                            <TextBlock Text="5 of a kind" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" Grid.Column="1" TextWrapping="Wrap" MaxWidth="60"/>
+                        </Grid>
+                    </Border>
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="17" Grid.Column="1">
+                        <TextBlock Text="SCORE 50" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" TextWrapping="Wrap"/>
+                    </Border>
+                    <Border x:Name="Border15" BorderBrush="Red" BorderThickness="2" Grid.Row="17" Grid.Column="2" MouseDown="Yahtzee_MouseDown" Background="Transparent">
+                        <TextBlock x:Name="Yahtzee" Text="" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+                    </Border>
+
+                    <!-- 19th row -->
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="18" Grid.Column="0">
+                        <TextBlock Text="Chance" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+                    </Border>
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="18" Grid.Column="1">
+                        <TextBlock Text="Add Total of All Dice" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" TextWrapping="Wrap"/>
+                    </Border>
+                    <Border x:Name="Border16" BorderBrush="Red" BorderThickness="2" Grid.Row="18" Grid.Column="2" MouseDown="Chance_MouseDown" Background="Transparent">
+                        <TextBlock x:Name="Chance" Text="" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+                    </Border>
+
+                    <!-- 20th row -->
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="19" Grid.Column="0">
+                        <TextBlock Text="YAHTZEE BONUS" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+                    </Border>
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="19" Grid.Column="1">
+                        <TextBlock Text="SCORE 100" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" TextWrapping="Wrap"/>
+                    </Border>
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="19" Grid.Column="2">
+                        <TextBlock x:Name="YahtzeeBonus" Text="" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+                    </Border>
+
+                    <!-- 21st row -->
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="20" Grid.Column="0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="TOTAL" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+                            <TextBlock Grid.Column="1" Text="Of Lower Section" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="10" TextWrapping="Wrap" MaxWidth="60"/>
+                        </Grid>
+                    </Border>
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="20" Grid.Column="1">
+                        <TextBlock Text="→" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+                    </Border>
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="20" Grid.Column="2">
+                        <TextBlock x:Name="Lower_Total" Text="" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+                    </Border>
+
+                    <!-- 22nd row -->
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="21" Grid.Column="0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="TOTAL" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+                            <TextBlock Grid.Column="1" Text="Of Upper Section" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="10" TextWrapping="Wrap" MaxWidth="60"/>
+                        </Grid>
+                    </Border>
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="21" Grid.Column="1">
+                        <TextBlock Text="→" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+                    </Border>
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="21" Grid.Column="2">
+                        <TextBlock x:Name="Upper_Total2" Text="" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+                    </Border>
+
+                    <!-- 23rd row -->
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="22" Grid.Column="0">
+                        <TextBlock Text="GRAND TOTAL" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+                    </Border>
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="22" Grid.Column="1">
+                        <TextBlock Text="→" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" TextWrapping="Wrap"/>
+                    </Border>
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="22" Grid.Column="2">
+                        <TextBlock x:Name="Grand_Total" Text="" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+                    </Border>
+
+                </Grid>
+            </Border>
+        </ScrollViewer>
+    </Grid>
+</Window>
