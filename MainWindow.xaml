@@ -15,7 +15,7 @@
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
-        <Grid Grid.Column="1"> <!-- left half of the window -->
+        <Grid Grid.Column="1"> <!-- right half of the window -->
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="50"/>
@@ -299,7 +299,7 @@
                                 <ColumnDefinition Width="3*"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="Small Straight" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" Grid.Column="0" TextWrapping="Wrap"/>
-                            <TextBlock Text="Sequence of 4" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" Grid.Column="1" TextWrapping="Wrap" MaxWidth="60"/>
+                            <TextBlock Text="Sequence of 4" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="10" Grid.Column="1" TextWrapping="Wrap" MaxWidth="50"/>
                         </Grid>
                     </Border>
                     <Border BorderBrush="Black" BorderThickness="1" Grid.Row="15" Grid.Column="1">
@@ -317,7 +317,7 @@
                                 <ColumnDefinition Width="3*"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="Large Straight" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" Grid.Column="0" TextWrapping="Wrap"/>
-                            <TextBlock Text="Sequence of 5" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" Grid.Column="1" TextWrapping="Wrap" MaxWidth="60"/>
+                            <TextBlock Text="Sequence of 5" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="10" Grid.Column="1" TextWrapping="Wrap" MaxWidth="50"/>
                         </Grid>
                     </Border>
                     <Border BorderBrush="Black" BorderThickness="1" Grid.Row="16" Grid.Column="1">

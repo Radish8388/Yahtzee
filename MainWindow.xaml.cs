@@ -108,9 +108,9 @@ namespace Yahtzee
             if (IsYahtzee())
                 MessageBox.Show("YAHTZEE!!!", "", MessageBoxButton.OK, MessageBoxImage.None);
             if (_rollCount == 3)
-                Instructions.Text = "Click a red box to enter your score.";
+                Instructions.Text = "Click a yellow box to enter your score.";
             else
-                Instructions.Text = "Either 1) click a red box to enter your score, or 2) move the dice and then roll again.";
+                Instructions.Text = "Either 1) click a yellow box to enter your score, or 2) move the dice and then roll again.";
         }
         #endregion
         #region scorecard events
