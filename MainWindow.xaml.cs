@@ -32,6 +32,7 @@ namespace Yahtzee
         int[] _scores = new int[21];
         bool[] _used = new bool[21];
         DateTime _gameCompletion;
+        int _yahtzeeCount = 0;
 
         public MainWindow()
         {
@@ -257,8 +258,9 @@ namespace Yahtzee
                 dice.Sort();
 
                 // look for full house (2 & 3 of a kind)
-                if ((dice[0] == dice[1] && dice[1] == dice[2] && dice[3] == dice[4]) ||
-                    (dice[0] == dice[1] && dice[2] == dice[3] && dice[3] == dice[4]))
+                if (((dice[0] == dice[1] && dice[1] == dice[2] && dice[3] == dice[4]) ||
+                    (dice[0] == dice[1] && dice[2] == dice[3] && dice[3] == dice[4])) && 
+                    (dice[0] != dice[4]))
                     score = 25;
 
                 _scores[12] = score;
@@ -449,6 +451,7 @@ namespace Yahtzee
             }
 
             _turnCount = 0;
+            _yahtzeeCount = 0;
             StartTurn();
 
             for (int i = 0; i < _scores.Length; i++)
@@ -487,7 +490,14 @@ namespace Yahtzee
         private void EndTurn()
         {
             if (IsYahtzee() && _used[15])
-                _scores[17] += 100;
+            {
+                _yahtzeeCount++;
+                if (_yahtzeeCount > 1)
+                {
+                    _scores[17] = 100 * (_yahtzeeCount - 1);
+                    YahtzeeBonus.Text = _scores[17].ToString();
+                }
+            }
             _turnCount++;
             ClearToolTips();
             UpdateScorecard();
@@ -558,6 +568,10 @@ namespace Yahtzee
                 Chance.Text = _scores[16].ToString();
             else
                 Chance.Text = "";
+            if (_scores[17] > 0)
+                YahtzeeBonus.Text = _scores[17].ToString();
+            else
+                YahtzeeBonus.Text = "";
 
             // upper totals
             _scores[7] = _scores[1] + _scores[2] + _scores[3] + _scores[4] + _scores[5] + _scores[6];
@@ -867,8 +881,9 @@ namespace Yahtzee
             dice.Sort();
 
             // look for full house (2 & 3 of a kind)
-            if ((dice[0] == dice[1] && dice[1] == dice[2] && dice[3] == dice[4]) ||
-                (dice[0] == dice[1] && dice[2] == dice[3] && dice[3] == dice[4]))
+            if (((dice[0] == dice[1] && dice[1] == dice[2] && dice[3] == dice[4]) ||
+                (dice[0] == dice[1] && dice[2] == dice[3] && dice[3] == dice[4])) &&
+                (dice[0] != dice[4]))
                 score = 25;
 
             return score;
